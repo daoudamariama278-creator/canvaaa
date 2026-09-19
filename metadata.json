@@ -1,0 +1,6 @@
+{
+  "name": "Space Dodger",
+  "description": "Jeu d'arcade spatial 2D fluide avec boucle temps réel Canvas, contrôles réactifs, astéroïdes, boucliers et bonus.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

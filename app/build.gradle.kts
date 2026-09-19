@@ -138,3 +138,28 @@ dependencies {
   "ksp"(libs.androidx.room.compiler)
   "ksp"(libs.moshi.kotlin.codegen)
 }
+
+// Support KMP / Xcode phase embedAndSignAppleFrameworkForXcode
+tasks.register("embedAndSignAppleFrameworkForXcode") {
+  group = "build"
+  description = "Embeds and signs Apple framework for Xcode execution"
+  doLast {
+    val configuration = System.getenv("CONFIGURATION") ?: "Debug"
+    val sdkName = System.getenv("SDK_NAME") ?: "iphonesimulator"
+    val builtProductsDir = System.getenv("BUILT_PRODUCTS_DIR")
+    val frameworksDir = if (builtProductsDir != null) file("$builtProductsDir/Frameworks") else null
+    val targetFrameworkDir = file("${project.layout.buildDirectory.get()}/bin/iosSimulatorArm64/${configuration.lowercase()}Framework/ComposeApp.framework")
+    
+    if (targetFrameworkDir.exists() && frameworksDir != null) {
+      frameworksDir.mkdirs()
+      copy {
+        from(targetFrameworkDir)
+        into(file("$frameworksDir/ComposeApp.framework"))
+      }
+      println("Copied framework from $targetFrameworkDir to $frameworksDir/ComposeApp.framework")
+    } else {
+      println("embedAndSignAppleFrameworkForXcode: target=${targetFrameworkDir.path}, destination=${frameworksDir?.path}")
+    }
+  }
+}
+

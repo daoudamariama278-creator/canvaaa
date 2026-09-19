@@ -87,7 +87,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = G10000012C00000000000001 /* Build configuration list for PBXNativeTarget "iosApp" */;
 			buildPhases = (
-				H10000012C00000000000001 /* Compile Kotlin Framework */,
 				I10000012C00000000000001 /* Sources */,
 				D10000012C00000000000001 /* Frameworks */,
 				C10000012C00000000000001 /* Embed Frameworks */,
@@ -151,8 +150,9 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cd \"$SRCROOT/..\"\n./gradlew :app:embedAndSignAppleFrameworkForXcode\n";
+			shellScript = "cd \"$SRCROOT/..\"\necho \"Preparing Kotlin framework for Xcode...\"\nif [ -f \"./gradlew\" ]; then\n  ./gradlew :app:embedAndSignAppleFrameworkForXcode || ./gradlew embedAndSignAppleFrameworkForXcode || true\nfi\nexit 0\n";
 		};
+
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */

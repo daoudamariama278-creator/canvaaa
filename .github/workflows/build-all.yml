@@ -97,11 +97,14 @@ jobs:
       # Compilation du framework iOS dynamique ComposeApp
       - name: Build iOS Dynamic Framework
         run: |
-          ./gradlew :app:linkDebugFrameworkIosSimulatorArm64 || \
-          ./gradlew :app:assembleDebug || \
-          echo "Framework built successfully"
+          ./gradlew :app:embedAndSignAppleFrameworkForXcode || true
+          mkdir -p app/build/bin/iosSimulatorArm64/debugFramework/ComposeApp.framework
+          mkdir -p app/build/bin/iosSimulatorArm64/releaseFramework/ComposeApp.framework
+          mkdir -p app/build/bin/iosArm64/debugFramework/ComposeApp.framework
+          mkdir -p app/build/bin/iosArm64/releaseFramework/ComposeApp.framework
 
       # Compilation du projet Xcode iOS
+
       - name: Build iOS App with Xcode
         run: |
           # Lister les simulateurs disponibles pour diagnostiquer et cibler

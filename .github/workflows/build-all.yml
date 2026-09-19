@@ -104,6 +104,19 @@ jobs:
       # Compilation du projet Xcode iOS
       - name: Build iOS App with Xcode
         run: |
+          # Lister les simulateurs disponibles pour diagnostiquer et cibler
+          xcrun simctl list devices available
+          
+          # Tentative de compilation avec destination ciblée iPhone ou générique iOS Simulator
+          xcodebuild build \
+            -project iosApp/iosApp.xcodeproj \
+            -scheme iosApp \
+            -configuration Debug \
+            -sdk iphonesimulator \
+            -destination "platform=iOS Simulator,name=iPhone 15" \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_IDENTITY="" || \
           xcodebuild build \
             -project iosApp/iosApp.xcodeproj \
             -scheme iosApp \
@@ -112,7 +125,16 @@ jobs:
             -destination "generic/platform=iOS Simulator" \
             CODE_SIGNING_ALLOWED=NO \
             CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_IDENTITY="" || \
+          xcodebuild build \
+            -project iosApp/iosApp.xcodeproj \
+            -scheme iosApp \
+            -configuration Debug \
+            -sdk iphonesimulator \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
             CODE_SIGN_IDENTITY=""
+
 
       # Règle 7 : Upload de l'application et framework iOS en artifact
       - name: Upload iOS Binary Artifact
